@@ -1,0 +1,51 @@
+﻿@model IList<Historico>
+@{
+    ViewData["Title"] = "Relátorios";
+    ViewBag.Subtitulo = "Lista de Relátorios";
+}
+
+<header class="d-flex justify-content-between align-items-center">
+    <div>
+        <h1 class="text-primary">@ViewBag.Subtitulo</h1>
+    </div>
+</header>
+<hr>
+
+<partial name="_PartialMessage" />
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th scope="col">Temperatura</th>
+            <th scope="col">Oxigenio</th>
+            <th scope="col">Batimentos</th>
+            <th scope="col">Data Medição</th>
+            <th scope="col">Latitude Medição</th>
+            <th scope="col">Longitude Medição</th>
+            <th scope="col">Qtd. Alertas</th>
+            <th scope="col">Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var relatorio in Model)
+        {
+            <tr class="table-dark" r>
+                <td scope="row">@relatorio.Temperatura</td>
+                <td>@relatorio.Oxigenio</td>
+                <td>@relatorio.Batimentos</td>
+                <td>@relatorio.DataMedicao.ToString("d")</td>
+                <td>@relatorio.Latitude</td>
+                <td>@relatorio.Longitude</td>
+                <td>@relatorio.Alerta.Count()</td>
+                <td>
+                    <a asp-action="Register" asp-controller="Alerta" asp-route-id="@relatorio.Id" class="btn btn-sm btn-success">
+                        <i class="bi bi-plus-lg" title="Criar Alerta"></i>
+                    </a>
+                    <a asp-action="Index" asp-controller="Alerta" asp-route-id="@relatorio.Id" class="btn btn-sm btn-info">
+                        <i class="bi-eye" title="Ver Alertas"></i>
+                    </a>                
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

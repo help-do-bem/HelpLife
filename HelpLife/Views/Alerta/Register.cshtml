@@ -1,0 +1,18 @@
+﻿@model Alerta
+@{
+    bool alterando = Context.Request.RouteValues.ContainsKey("id");
+    ViewData["Title"] = "Alerta";
+    if (alterando)
+        ViewBag.Subtitulo = "Atualizando Alerta";
+    else
+        ViewBag.Subtitulo = "Registrando Alerta";
+}
+
+<h1 class="text-primary">@ViewBag.Subtitulo</h1>
+<hr>
+
+<div asp-validation-summary="ModelOnly" class="val-summary text-danger mb-3"></div>
+
+<form asp-action="Register" class="row">
+    <partial name="_Form"></partial>
+</form>

@@ -7,7 +7,7 @@ namespace HelpLife.Extensions
     {
         public static void ShowMessage(this Controller @this, string text, bool error = false)
         {
-            @this.TempData["message"] = MessageViewModel.Serialize(text, error ? MessageType.Error : MessageType.Information);
+            @this.TempData["message"] = MensagemViewModel.Serialize(text, error ? TipoMensagem.Erro : TipoMensagem.Informacao);
         }
     }
 }

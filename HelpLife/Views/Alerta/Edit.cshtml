@@ -1,0 +1,14 @@
+﻿@model Alerta
+@{
+    ViewData["Title"] = "Alerta";
+    ViewBag.Subtitulo = "Editando Alerta";
+}
+
+<h1 class="text-primary">@ViewBag.Subtitulo</h1>
+<hr>
+
+<div asp-validation-summary="ModelOnly" class="val-summary text-danger mb-3"></div>
+
+<form asp-action="Edit" class="row">
+    <partial name="_Form"></partial>
+</form>

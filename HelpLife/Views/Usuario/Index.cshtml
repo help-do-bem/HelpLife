@@ -1,0 +1,76 @@
+﻿@model List<Usuario>
+
+@{
+    ViewData["Title"] = "Pacientes";
+    ViewBag.Subtitulo = "Pacientes";
+}
+<header class="d-flex justify-content-between align-items-center">
+    <div>
+        <h1 class="text-primary">@ViewBag.Subtitulo</h1>
+    </div>
+</header>
+<hr />
+
+<partial name="_PartialMessage" />
+
+<alert texto="@TempData["value"]" attribute="dismissible"></alert>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th scope="col">Nome</th>
+            <th scope="col">E-mail</th>
+            <th scope="col">Quantidade de Registros</th>            
+            <th scope="col">Ver Registros</th>
+            <th scope="col">Ver Detalhes</th>
+            <th scope="col">Vincular</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var paciente in Model)
+        {
+            <tr class="table-dark">
+                <td scope="row">@paciente.Nome</td>
+                <td scope="row">@paciente.Email</td>
+                <td scope="row">@paciente.Historicos.Count()</td>
+                <td>
+                    <a asp-action="Index" asp-controller="Historico" asp-route-id="@paciente.Id" class="btn btn-sm btn-primary">
+                        <i class="bi-eye" title="Ver Registros"></i>
+                    </a>
+                </td>
+                <td>
+                    <a asp-action="Detail" asp-route-id="@paciente.Id" class="btn btn-sm btn-info">
+                        <i class="bi-eye" title="Ver Detalhes"></i>
+                    </a>
+                </td>
+                <td>
+                    <a asp-action="Vincular" asp-route-id="@paciente.Id" class="btn btn-sm btn-success">
+                        <i class="bi bi-person-plus-fill" title="Ver Detalhes"></i>
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Confirmation</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                Você realmente quer deletar esse item?
+            </div>
+            <div class="modal-footer">
+                <form asp-action="remove">
+                    <input type="hidden" name="id" id="remove" />
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Não</button>
+                    <button type="submit" class="btn btn-danger">Sim</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
