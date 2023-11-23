@@ -30,7 +30,7 @@ namespace HelpLife.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Decricao")
+                    b.Property<string>("Descricao")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -40,7 +40,7 @@ namespace HelpLife.Migrations
                     b.Property<int>("HistoricoId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("MedicoId")
+                    b.Property<int>("MedicoId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -50,6 +50,45 @@ namespace HelpLife.Migrations
                     b.HasIndex("MedicoId");
 
                     b.ToTable("Alertas");
+                });
+
+            modelBuilder.Entity("HelpLife.Models.Consulta", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Diagnostico")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MedicoId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("MedicoId1")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Prescricao")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UsuarioId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UsuarioId1")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MedicoId1");
+
+                    b.HasIndex("UsuarioId1");
+
+                    b.ToTable("Consulta");
                 });
 
             modelBuilder.Entity("HelpLife.Models.Endereco", b =>
@@ -438,11 +477,34 @@ namespace HelpLife.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("HelpLife.Models.Medico", null)
+                    b.HasOne("HelpLife.Models.Medico", "Medico")
                         .WithMany("Alerta")
-                        .HasForeignKey("MedicoId");
+                        .HasForeignKey("MedicoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Historico");
+
+                    b.Navigation("Medico");
+                });
+
+            modelBuilder.Entity("HelpLife.Models.Consulta", b =>
+                {
+                    b.HasOne("HelpLife.Models.Medico", "Medico")
+                        .WithMany("Consultas")
+                        .HasForeignKey("MedicoId1")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HelpLife.Models.Usuario", "Usuario")
+                        .WithMany("Consultas")
+                        .HasForeignKey("UsuarioId1")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Medico");
+
+                    b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("HelpLife.Models.Endereco", b =>
@@ -557,11 +619,15 @@ namespace HelpLife.Migrations
                 {
                     b.Navigation("Alerta");
 
+                    b.Navigation("Consultas");
+
                     b.Navigation("MedicosUsuarios");
                 });
 
             modelBuilder.Entity("HelpLife.Models.Usuario", b =>
                 {
+                    b.Navigation("Consultas");
+
                     b.Navigation("Endereco");
 
                     b.Navigation("Historicos");

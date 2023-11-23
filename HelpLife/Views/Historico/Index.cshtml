@@ -11,6 +11,17 @@
 </header>
 <hr>
 
+<form asp-action="Index" method="get">
+    <div class="form-group col-sm-6 col-lg-3 col-xl-2">
+        <label for="filtroData">Filtrar por data:</label>
+        <input type="hidden" name="id" name="id"/>
+        <input type="date" class="form-control" id="filtroData" name="filtroData">
+    </div>
+    <button type="submit" class="btn btn-primary">Filtrar</button>
+</form>
+
+<hr/>
+
 <partial name="_PartialMessage" />
 
 <table class="table table-hover">
@@ -38,12 +49,12 @@
                 <td>@relatorio.Longitude</td>
                 <td>@relatorio.Alerta.Count()</td>
                 <td>
-                    <a asp-action="Register" asp-controller="Alerta" asp-route-id="@relatorio.Id" class="btn btn-sm btn-success">
-                        <i class="bi bi-plus-lg" title="Criar Alerta"></i>
-                    </a>
                     <a asp-action="Index" asp-controller="Alerta" asp-route-id="@relatorio.Id" class="btn btn-sm btn-info">
                         <i class="bi-eye" title="Ver Alertas"></i>
-                    </a>                
+                    </a>
+                    <a asp-action="Register" asp-controller="Alerta" asp-route-id="@relatorio.Id" class="btn btn-sm btn-success">
+                        <i class="bi bi-plus-lg" title="Criar Alerta"></i>
+                    </a>           
                 </td>
             </tr>
         }

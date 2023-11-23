@@ -13,7 +13,7 @@ namespace HelpLife.Models
         public string Nome { get; set; }
         [Column("EMAIL")]
         public string Email { get; set; }
-        [Column("DATA_NASC")]
+        [Column("DATA_NASC"), DataType(DataType.Date)]
         public DateTime DataNasc { get; set; }
         [Column("TELEFONE")]
         public string Telefone { get; set; }
@@ -22,6 +22,7 @@ namespace HelpLife.Models
 
         public IList<MedicoUsuario> MedicosUsuarios { get; set; }
         public virtual IList<Endereco> Endereco { get; set; }
-        public virtual IList<Historico> Historicos { get; set; }        
+        public virtual IList<Historico> Historicos { get; set; }
+        public IList<Consulta> Consultas { get; set; }
     }
 }

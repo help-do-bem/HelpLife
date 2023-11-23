@@ -1,0 +1,38 @@
+﻿@model IEnumerable<Endereco>
+@{
+    ViewData["Title"] = "Lista";
+    ViewBag.Subtitulo = "Lista de Endereco";
+}
+
+<header class="d-flex justify-content-between align-items-center">
+    <div>
+        <h1 class="text-primary">@ViewBag.Subtitulo</h1>
+    </div>
+</header>
+<hr>
+
+<partial name="_PartialMessage" />
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th scope="col">CEP</th>
+            <th scope="col">Estado</th>
+            <th scope="col">Cidade</th>
+            <th scope="col">Logradouro</th>
+            <th scope="col">Número</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var endereco in Model)
+        {
+            <tr class="table-dark" >
+                <td scope="row">@endereco.CEP</td>
+                <td>@endereco.Estado</td>
+                <td>@endereco.Cidade</td>
+                <td>@endereco.Logradouro</td>
+                <td>@endereco.Numero</td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,5 +1,6 @@
 ﻿using HelpLife.DataBase;
 using HelpLife.Extensions;
+using HelpLife.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,8 +15,9 @@ namespace HelpLife.Controllers
             _context = context;
         }
 
-        public IActionResult Index(int id)
+        public IActionResult Index(int id, DateTime? filtroData)
         {
+            IList<Historico> _Historicos = null;
             if (!User.Identity.IsAuthenticated)
             {
                 return RedirectToAction("Login", "User");
@@ -27,11 +29,18 @@ namespace HelpLife.Controllers
                 .Where(z => z.Id == id)
                 .First();
 
-            this.ShowMessage($"Mostrando relátorios do paciente {_Usuario.Nome}.", false);
+            if (filtroData != null)
+            {
+                _Historicos = _Usuario.Historicos.Where(x => DateTime.Parse(x.DataMedicao.ToString("d")) == filtroData).ToList();
+                this.ShowMessage($"Relátorios filtrandos com sucesso.", false);
+            }
+            else
+            {
+                _Historicos = _Usuario.Historicos;
+                this.ShowMessage($"Mostrando relátorios do paciente {_Usuario.Nome}.", false);
+            }
 
-            var lista = _Usuario.Historicos;
-
-            return View(lista);
+            return View(_Historicos);
         }
     }
 }

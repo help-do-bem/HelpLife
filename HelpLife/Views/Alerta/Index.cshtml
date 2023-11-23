@@ -25,7 +25,7 @@
         @foreach (var alerta in Model)
         {
             <tr class="table-dark" r>
-                <td scope="row">@alerta.Decricao</td>
+                <td scope="row">@alerta.Descricao</td>
                 <td>@alerta.DtCriacao.ToString("d")</td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@alerta.Id" class="btn btn-sm btn-secondary">

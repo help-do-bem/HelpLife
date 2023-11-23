@@ -21,6 +21,7 @@ namespace HelpLife.Models
         public IdentityUser User { get; set; }
 
         public IList<MedicoUsuario> MedicosUsuarios { get; set; }
+        public IList<Consulta> Consultas { get; set; }
         public IList<Alerta> Alerta { get; set; }
     }
 }

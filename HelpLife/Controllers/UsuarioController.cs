@@ -3,6 +3,7 @@ using HelpLife.Extensions;
 using HelpLife.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using System.Security.Claims;
 
 namespace HelpLife.Controllers
@@ -16,8 +17,32 @@ namespace HelpLife.Controllers
             _context = context;
         }
 
-        public IActionResult Index()
+        [HttpGet]
+        public IActionResult Index(string filtro)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "User");
+            }
+
+            var lista = _context.Usuarios
+                .Where(x => x.Nome.Contains(filtro) || filtro == null)
+                .Include(y => y.MedicosUsuarios)
+                .Include(x => x.Historicos)
+                .ThenInclude(z => z.Alerta)
+                .ToList();
+
+            if(filtro != null)
+                this.ShowMessage($"Paciente filtrado com sucesso.", false);
+
+            return View(lista);
+        }
+
+        [HttpGet]
+        public IActionResult IndexMedico()
+        {
+            IList<Usuario> Usuarios = new List<Usuario>();
+
             if (!User.Identity.IsAuthenticated)
             {
                 return RedirectToAction("Login", "User");
@@ -29,12 +54,42 @@ namespace HelpLife.Controllers
                 .ThenInclude(z => z.Alerta)
                 .ToList();
 
-            return View(lista);
+            var _Medico = _context.Medicos
+                .Where(x => x.UserId == User.FindFirstValue(ClaimTypes.NameIdentifier))
+                .First();
+
+            foreach (var item in lista)
+            {
+                if (item.MedicosUsuarios != null && item.MedicosUsuarios.Count > 0)
+                {
+                    if (item.MedicosUsuarios.Where(x => x.UsuarioId == item.Id && x.MedicoId == _Medico.Id).First() != null)
+                    {
+                        Usuarios.Add(item);
+                    }
+                }
+            }
+
+            return View("Index", Usuarios);
         }
 
-        public IActionResult Detail()
+        public IActionResult Detail(int id)
         {
-            return View();
+            var Usuario =_context.Usuarios
+                            .Where(z => z.Id == id)
+                            .Include(x => x.Endereco)
+                            .First();
+
+            return View(Usuario);
+        }
+
+        public IActionResult Endereco(int id)
+        {
+            var Usuario = _context.Usuarios
+                            .Where(z => z.Id == id)
+                            .Include(x => x.Endereco)
+                            .First();
+
+            return View(Usuario.Endereco);
         }
 
         public IActionResult Vincular(int id)

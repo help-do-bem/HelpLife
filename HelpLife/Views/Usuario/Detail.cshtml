@@ -1,1 +1,38 @@
-﻿
+﻿@model Usuario
+@{
+    ViewData["Title"] = "Detalhes do Usuário";
+    ViewBag.Subtitulo = "Detalhes";
+}
+<header class="d-flex justify-content-between align-items-center">
+    <div>
+        <h1 class="text-primary">@ViewBag.Subtitulo</h1>
+    </div>
+</header>
+<hr />
+
+<partial name="_PartialMessage" />
+
+<input type="hidden" asp-for="@Model.Id">
+<div class="form-group col-sm-6 col-lg-3 col-xl-2">
+    <label asp-for="@Model.Nome"></label><br>
+    <input asp-for="@Model.Nome" class="form-control" UserName="form-control" autofocus autocomplete="off" disabled>
+</div>
+<div class="w-100"></div>
+<div class="form-group col-sm-6 col-lg-3 col-xl-2">
+    <label asp-for="@Model.Email"></label><br>
+    <input asp-for="@Model.Email" class="form-control" UserName="form-control" autofocus autocomplete="off" disabled>
+</div>
+<div class="w-100"></div>
+<div class="form-group col-sm-6 col-lg-3 col-xl-2">
+    <label asp-for="@Model.DataNasc"></label><br>
+    <input asp-for="@Model.DataNasc" class="form-control" UserName="form-control" autofocus autocomplete="off" disabled>
+</div>
+<div class="w-100"></div>
+<div class="form-group col-sm-6 col-lg-3 col-xl-2">
+    <label asp-for="@Model.Telefone"></label><br>
+    <input asp-for="@Model.Telefone" class="form-control" UserName="form-control" autofocus autocomplete="off" disabled>
+</div>
+<div class="w-100"></div>
+<a asp-action="Endereco" asp-route-id="@Model.Id" class="btn btn-sm btn-secondary">
+    Endereços
+</a>

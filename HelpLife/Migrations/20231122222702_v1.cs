@@ -245,6 +245,36 @@ namespace HelpLife.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Consulta",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Diagnostico = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Prescricao = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MedicoId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MedicoId1 = table.Column<int>(type: "int", nullable: false),
+                    UsuarioId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UsuarioId1 = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Consulta", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Consulta_MEDICO_MedicoId1",
+                        column: x => x.MedicoId1,
+                        principalTable: "MEDICO",
+                        principalColumn: "ID_MEDICO",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Consulta_USUARIO_UsuarioId1",
+                        column: x => x.UsuarioId1,
+                        principalTable: "USUARIO",
+                        principalColumn: "ID_USUARIO",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Medico_Usuario",
                 columns: table => new
                 {
@@ -274,10 +304,10 @@ namespace HelpLife.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Decricao = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Descricao = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DtCriacao = table.Column<DateTime>(type: "datetime2", nullable: false),
                     HistoricoId = table.Column<int>(type: "int", nullable: false),
-                    MedicoId = table.Column<int>(type: "int", nullable: true)
+                    MedicoId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -292,7 +322,8 @@ namespace HelpLife.Migrations
                         name: "FK_Alertas_MEDICO_MedicoId",
                         column: x => x.MedicoId,
                         principalTable: "MEDICO",
-                        principalColumn: "ID_MEDICO");
+                        principalColumn: "ID_MEDICO",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -345,6 +376,16 @@ namespace HelpLife.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Consulta_MedicoId1",
+                table: "Consulta",
+                column: "MedicoId1");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Consulta_UsuarioId1",
+                table: "Consulta",
+                column: "UsuarioId1");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ENDERECO_ID_USUARIO",
                 table: "ENDERECO",
                 column: "ID_USUARIO");
@@ -385,6 +426,9 @@ namespace HelpLife.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "Consulta");
 
             migrationBuilder.DropTable(
                 name: "ENDERECO");

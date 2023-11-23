@@ -33,6 +33,24 @@ namespace HelpLife.Controllers
             return View(lista);
         }
 
+        public IActionResult IndexMedico()
+        {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "User");
+            }
+
+            var _Medico = _context.Medicos
+                .Where(x => x.UserId == User.FindFirstValue(ClaimTypes.NameIdentifier))
+                .First();
+
+            var _Alerta = _context.Alertas
+                .Where(y => y.MedicoId == _Medico.Id)
+                .First();
+
+            return RedirectToAction("Index", _Alerta);
+        }
+
         [HttpGet]
         public IActionResult Register(int id)
         {
