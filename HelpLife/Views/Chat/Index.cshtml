@@ -1,8 +1,12 @@
 ﻿@model IList<Chat>
 
-@foreach (var item in Model)
-{
-    <div class="@item.Tipo">
-        <p>@item.Texto</p>
-    </div>
-}
+ 
+    @foreach (var item in Model)
+    {
+        <div id="msg" class="@item.Tipo">
+            <p id="username">@item.Nome</p>
+            <p>@item.Texto</p>
+            <p>@item.createdAt</p>
+        </div>
+    }
+ 

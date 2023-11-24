@@ -14,5 +14,38 @@ html {
 }
 
 body {
+  color: #000;
   margin-bottom: 60px;
+  background-color: #fff;
+}
+
+#username {
+    font-weight: 900;
+    letter-spacing: normal;
+    font-size: 16px;
+}
+.user-id{
+    background-color: rosybrown;
+}
+.paciente {
+    background-color: #333333;
+    display: flex;
+    align-items: flex-start;
+    padding: 1em;
+    color: #fff;
+    letter-spacing: .1rem;
+    margin: 1em 0;
+    border-radius: 1em;
+    flex-direction: column;
+}
+
+.medico {
+    background-color: #156669;
+    padding: 1em;
+    display: flex;
+    align-items: flex-end;
+    letter-spacing: .1rem;
+    border-radius: 1em;
+    margin-top: .2em;
+    flex-direction: column
 }
