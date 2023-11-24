@@ -1,0 +1,8 @@
+﻿@model IList<Chat>
+
+@foreach (var item in Model)
+{
+    <div class="@item.Tipo">
+        <p>@item.Texto</p>
+    </div>
+}
