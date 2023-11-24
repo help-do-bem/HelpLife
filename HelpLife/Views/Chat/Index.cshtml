@@ -1,12 +1,25 @@
-﻿@model IList<Chat>
+﻿@model ChatViewModel
+@{
+    ViewData["Title"] = "Alerta";
+}
 
  
-    @foreach (var item in Model)
-    {
-        <div id="msg" class="@item.Tipo">
-            <p id="username">@item.Nome</p>
-            <p>@item.Texto</p>
-            <p>@item.createdAt</p>
+@foreach (var item in Model.Chats)
+{
+    <div id="msg" class="@item.Tipo">
+        <p id="username">@item.Nome</p>
+        <p>@item.Texto</p>
+        <p>@item.createdAt</p>
+    </div>
+}
+<form asp-action="Register" method="post">
+    <div class="d-flex flex-row justify-content-between bd-highlight mb-3 mt-3">
+        <div class="form-group col-sm-11">
+            <input asp-for="@Model.Chat.Texto" class="form-control" UserName="form-control" autofocus autocomplete="off">
+            <span asp-validation-for="@Model.Chat.Texto" class="text-danger"></span>
         </div>
-    }
- 
+        <div>
+            <botao>Enviar</botao>
+        </div>
+    </div>
+</form>

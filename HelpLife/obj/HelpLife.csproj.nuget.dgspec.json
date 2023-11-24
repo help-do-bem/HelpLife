@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Victor Hugo\\source\\repos\\HelpLife\\HelpLife\\HelpLife.csproj": {}
+    "C:\\Users\\jfret\\source\\repos\\HelpLife\\HelpLife\\HelpLife.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Victor Hugo\\source\\repos\\HelpLife\\HelpLife\\HelpLife.csproj": {
+    "C:\\Users\\jfret\\source\\repos\\HelpLife\\HelpLife\\HelpLife.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Victor Hugo\\source\\repos\\HelpLife\\HelpLife\\HelpLife.csproj",
+        "projectUniqueName": "C:\\Users\\jfret\\source\\repos\\HelpLife\\HelpLife\\HelpLife.csproj",
         "projectName": "HelpLife",
-        "projectPath": "C:\\Users\\Victor Hugo\\source\\repos\\HelpLife\\HelpLife\\HelpLife.csproj",
-        "packagesPath": "C:\\Users\\Victor Hugo\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Victor Hugo\\source\\repos\\HelpLife\\HelpLife\\obj\\",
+        "projectPath": "C:\\Users\\jfret\\source\\repos\\HelpLife\\HelpLife\\HelpLife.csproj",
+        "packagesPath": "C:\\Users\\jfret\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\jfret\\source\\repos\\HelpLife\\HelpLife\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Victor Hugo\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\jfret\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [

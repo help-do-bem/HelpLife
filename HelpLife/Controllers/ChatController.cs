@@ -5,46 +5,37 @@ using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
 using HelpLife.Models;
 using HelpLife.ViewModels;
-using Google.Cloud.Firestore.V1;
 
 namespace HelpLife.Controllers
 {
     public class ChatController : Controller
     {
         private LifeContext _context;
+        private FirestoreDb _db;
+        private CollectionReference _collection;
 
         public ChatController(LifeContext context)
         {
             _context = context;
+            _db = FirestoreDb.Create("chathelplife");
+            _collection = _db.Collection("chats");
         }
 
         public async Task<IActionResult> Index()
         {
             IList<Chat> chats = new List<Chat>();
-            TimeZoneInfo timeZoneInfo = TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time");
-            FirestoreDb db = FirestoreDb.Create("chathelplife");
-            CollectionReference collection = db.Collection("chats");
-            DocumentReference document = collection.Document();
+            ChatViewModel chatViewModel = new ChatViewModel();
+            chatViewModel.Chats = chats;
 
-            var _Medico = _context.Medicos
-                .Include(z => z.User)
-                .Where(x => x.UserId == User.FindFirstValue(ClaimTypes.NameIdentifier))
-                .First();            
+            TimeZoneInfo timeZoneInfo = TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time");                    
 
-            //await document.SetAsync(new { _id = document.Id, createdAt = Timestamp.GetCurrentTimestamp(), text = "Só pode criticar coreano", user = new { _id = _Medico.User.Email, avatar = "https://i.pravatar.cc/300", tipo = "medico" } });
-
-            FirestoreClient firestoreClient = FirestoreClient.Create();
-            DocumentSnapshot snapshot = await document.GetSnapshotAsync();
-
-            Dictionary<string, object> data = snapshot.ToDictionary();
-
-            Query query = collection;
+            Query query = _collection;
             QuerySnapshot querySnapshot = await query.OrderBy("createdAt").GetSnapshotAsync();
-            
+
             foreach (DocumentSnapshot queryResult in querySnapshot.Documents)
             {
                 string nome = string.Empty;
-                DateTime createdAt = DateTime.SpecifyKind(queryResult.GetValue<Timestamp>("createdAt").ToDateTime(), DateTimeKind.Unspecified);
+                DateTime _createdAt = DateTime.SpecifyKind(queryResult.GetValue<Timestamp>("createdAt").ToDateTime(), DateTimeKind.Unspecified);
 
                 if (queryResult.GetValue<string>("user.tipo") == "medico")
                 {
@@ -56,7 +47,7 @@ namespace HelpLife.Controllers
                 }
                 else
                 {
-                    nome = _context.Usuarios                        
+                    nome = _context.Usuarios
                         .Where(x => x.Email == queryResult.GetValue<string>("user._id"))
                         .First()
                         .Nome;
@@ -69,12 +60,30 @@ namespace HelpLife.Controllers
                     Avatar = queryResult.GetValue<string>("user.avatar"),
                     Email = queryResult.GetValue<string>("user._id"),
                     Nome = nome,
-                    createdAt = TimeZoneInfo.ConvertTimeToUtc(createdAt, timeZoneInfo),
+                    createdAt = _createdAt.ToLocalTime(),
                 };
-                chats.Add(chat);
+                chatViewModel.Chats.Add(chat);
+                
             }
 
-            return View(chats);
+            return View(chatViewModel);
+        }
+
+        public async Task<IActionResult> Register(ChatViewModel chatViewModel)
+        {
+            FirestoreDb db = FirestoreDb.Create("chathelplife");
+            CollectionReference collection = db.Collection("chats");
+
+            DocumentReference document = collection.Document();
+
+            var _Medico = _context.Medicos
+                .Include(z => z.User)
+                .Where(x => x.UserId == User.FindFirstValue(ClaimTypes.NameIdentifier))
+                .First();
+
+            await document.SetAsync(new { _id = document.Id, createdAt = Timestamp.GetCurrentTimestamp(), text = chatViewModel.Chat.Texto, user = new { _id = _Medico.User.Email, avatar = "https://i.pravatar.cc/300", tipo = "medico" } });
+
+            return RedirectToAction("Index");
         }
     }
 }
