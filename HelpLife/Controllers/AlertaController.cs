@@ -46,11 +46,11 @@ namespace HelpLife.Controllers
 
             var _Alerta = _context.Alertas
                 .Where(y => y.MedicoId == _Medico.Id)
-                .First();
-
-            return RedirectToAction("Index", _Alerta);
+                .ToList();
+            
+            return View("Index", _Alerta);
         }
-
+        
         [HttpGet]
         public IActionResult Register(int id)
         {

@@ -37,7 +37,6 @@ namespace HelpLife.Controllers
                     this.ShowMessage("Médico não encontrado.", true);
                     return RedirectToAction("Index", "Home");
                 }
-
                 var _VMUser = new RegisterUserViewModel
                 {
                     Id = _Medico.Id,
@@ -70,14 +69,17 @@ namespace HelpLife.Controllers
 
         [HttpPost]
         public async Task<IActionResult> Register([FromForm] RegisterUserViewModel _VMUser)
-        {
+        {            
             ModelState.Remove("Id");
             ModelState.Remove("UserId");
 
             if (!string.IsNullOrEmpty(_VMUser.UserId))
             {
-                ModelState.Remove("Password");
-                ModelState.Remove("ConfPassword");
+                var _Medico = _context.Medicos.Where(x => x.UserId == _VMUser.UserId).First();
+
+                _VMUser.Id = _Medico.Id;
+                ModelState.Remove("Senha");
+                ModelState.Remove("ConfSenha");
             }
 
             if (ModelState.IsValid)
@@ -248,11 +250,13 @@ namespace HelpLife.Controllers
         public async Task<IActionResult> DeletePost(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
+            var _Medico = _context.Medicos.Where(x => x.UserId == id).First();
             if (user != null)
             {
                 var resultado = await _userManager.DeleteAsync(user);
                 if (resultado.Succeeded)
                 {
+                    _context.Medicos.Remove(_Medico);
                     this.ShowMessage("Usuário deletado com sucesso.");
                 }
                 else
